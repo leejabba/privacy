@@ -9,10 +9,19 @@
     h1 { font-size: 24px; margin-bottom: 4px; }
     .sub { color: #666; font-size: 14px; margin-bottom: 40px; }
     h2 { font-size: 17px; margin-top: 36px; border-bottom: 1px solid #eee; padding-bottom: 6px; }
+    h3 { font-size: 15px; margin-top: 24px; margin-bottom: 6px; color: #222; }
     p, li { font-size: 15px; color: #333; }
     ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
     a { color: #4F6AF5; }
     .updated { font-size: 13px; color: #888; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 10px; margin-right: 6px; vertical-align: middle; }
+    .tag-collect { background: #FEE2E2; color: #B91C1C; }
+    .tag-store { background: #DBEAFE; color: #1D4ED8; }
+    .tag-access { background: #D1FAE5; color: #065F46; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+    th { background: #f5f5f5; text-align: left; padding: 8px 12px; border: 1px solid #e0e0e0; }
+    td { padding: 8px 12px; border: 1px solid #e0e0e0; vertical-align: top; }
   </style>
 </head>
 <body>
@@ -20,40 +29,85 @@
   <p class="sub">무명사업가 대시보드 (Chrome Extension)</p>
   <p class="updated">최종 업데이트: 2026년 5월 1일</p>
 
-  <h2>1. 수집하는 정보</h2>
-  <p>본 확장 프로그램은 서비스 제공을 위해 다음 정보를 수집합니다:</p>
+  <h2>1. 처리하는 데이터 및 목적</h2>
+  <p>본 확장 프로그램이 처리하는 데이터는 성격에 따라 아래와 같이 구분됩니다:</p>
+
+  <table>
+    <tr>
+      <th>데이터</th>
+      <th>처리 방식</th>
+      <th>목적</th>
+      <th>외부 전송</th>
+    </tr>
+    <tr>
+      <td><strong>이메일 주소</strong></td>
+      <td>수집 · 서버 저장</td>
+      <td>계정 생성, 로그인 인증</td>
+      <td>Supabase (인증 서버)</td>
+    </tr>
+    <tr>
+      <td><strong>사용자 작성 데이터</strong><br><small>목표, 주요 할일, Todos, 메모, 바로가기</small></td>
+      <td>사용자가 직접 입력 · 클라우드 동기화</td>
+      <td>기기 간 데이터 동기화</td>
+      <td>Supabase (사용자 본인 계정에만 저장)</td>
+    </tr>
+    <tr>
+      <td><strong>프로필 정보</strong><br><small>닉네임, 프로필 사진</small></td>
+      <td>사용자가 직접 설정 · 클라우드 저장</td>
+      <td>프로필 표시, 게시판 댓글 작성자 식별</td>
+      <td>Supabase (사용자 본인 계정에만 저장)</td>
+    </tr>
+    <tr>
+      <td><strong>브라우저 방문 기록</strong></td>
+      <td>로컬 접근만 (외부 전송 없음)</td>
+      <td>바로가기 페이지 제목 자동 완성</td>
+      <td>없음</td>
+    </tr>
+    <tr>
+      <td><strong>바로가기 URL 도메인</strong></td>
+      <td>파비콘 표시 시 Google 서버 요청</td>
+      <td>바로가기 아이콘(파비콘) 표시</td>
+      <td>Google 파비콘 서비스 (도메인만, 익명)</td>
+    </tr>
+  </table>
+
+  <h3>브라우저 방문 기록에 대한 상세 설명</h3>
+  <p>본 확장 프로그램은 Chrome의 <code>history</code> 권한을 사용하지만, 이는 오직 <strong>바로가기 추가 시 페이지 제목을 자동으로 입력해주는 기능</strong>에만 사용됩니다. 방문 기록은 외부 서버로 전송되지 않으며, 기기 외부에 저장되지 않습니다.</p>
+
+  <h2>2. 데이터 저장 위치</h2>
   <ul>
-    <li><strong>이메일 주소</strong>: 로그인 및 계정 식별 목적</li>
-    <li><strong>사용자 작성 데이터</strong>: 목표, 주요 할일, Todos, 메모, 바로가기 링크</li>
-    <li><strong>프로필 정보</strong>: 닉네임, 프로필 사진 (사용자가 직접 설정한 경우)</li>
-    <li><strong>브라우저 방문 기록</strong>: 바로가기 아이콘(파비콘) 표시 및 페이지 제목 자동 완성에만 사용</li>
+    <li><strong>클라우드 (Supabase)</strong>: 이메일, 사용자 작성 데이터, 프로필 정보 — 로그인한 사용자에 한함</li>
+    <li><strong>로컬 기기 (Chrome storage API)</strong>: 로그인 세션, 캐시 데이터 — 브라우저 내에만 저장</li>
+    <li><strong>기기 외부로 나가지 않는 데이터</strong>: 브라우저 방문 기록</li>
   </ul>
 
-  <h2>2. 정보의 이용 목적</h2>
+  <h2>3. 제3자 서비스</h2>
   <ul>
-    <li>대시보드 데이터의 기기 간 클라우드 동기화</li>
-    <li>사용자 계정 인증 및 세션 관리</li>
-    <li>바로가기 링크의 파비콘 및 제목 자동 표시</li>
+    <li><strong>Supabase</strong> (<a href="https://supabase.com/privacy" target="_blank">개인정보처리방침</a>): 사용자 계정 및 데이터 저장</li>
+    <li><strong>Google 파비콘 서비스</strong>: 바로가기 아이콘 표시 목적으로 URL 도메인 정보를 Google 서버에 요청합니다. 이 과정에서 개인 식별 정보는 전송되지 않습니다.</li>
   </ul>
 
-  <h2>3. 정보의 저장 및 보관</h2>
-  <p>수집된 데이터는 <a href="https://supabase.com" target="_blank">Supabase</a>(클라우드 데이터베이스)에 암호화된 연결(HTTPS)로 저장됩니다. 로컬 데이터는 Chrome 브라우저의 storage API를 통해 사용자 기기에 저장됩니다.</p>
-
-  <h2>4. 제3자 제공</h2>
-  <p>수집된 개인정보는 법령에 의한 경우를 제외하고 제3자에게 제공하거나 공유하지 않습니다.</p>
-  <p>바로가기 아이콘(파비콘) 표시를 위해 Google의 파비콘 서비스를 사용하며, 이 과정에서 바로가기 URL의 도메인 정보가 Google 서버에 전달될 수 있습니다.</p>
+  <h2>4. 데이터 공유 및 제3자 제공</h2>
+  <p>수집된 개인정보는 법령에 의한 경우를 제외하고 제3자에게 제공하거나 판매하지 않습니다. 위 제3자 서비스(Supabase, Google)는 서비스 운영에 필요한 범위 내에서만 데이터를 처리합니다.</p>
 
   <h2>5. 데이터 보관 기간</h2>
-  <p>사용자가 계정을 삭제하거나 데이터 삭제를 요청할 때까지 보관합니다. 삭제 요청은 아래 이메일로 문의하시기 바랍니다.</p>
+  <p>사용자가 계정 삭제 또는 데이터 삭제를 요청할 때까지 보관합니다. 삭제 요청은 아래 이메일로 문의해 주세요.</p>
 
   <h2>6. 사용자의 권리</h2>
-  <p>사용자는 언제든지 자신의 데이터 열람, 수정, 삭제를 요청할 수 있습니다. 확장 프로그램 내 설정에서 직접 데이터를 삭제하거나, 아래 이메일로 문의하시기 바랍니다.</p>
+  <ul>
+    <li>자신의 데이터 열람, 수정, 삭제 요청 가능</li>
+    <li>확장 프로그램 내 설정에서 직접 데이터 삭제 가능</li>
+    <li>계정 삭제 요청 시 이메일로 문의</li>
+  </ul>
 
-  <h2>7. 문의</h2>
-  <p>개인정보 관련 문의사항은 아래로 연락해 주세요:<br>
+  <h2>7. 어린이 개인정보 보호</h2>
+  <p>본 서비스는 만 14세 미만 아동을 대상으로 하지 않으며, 의도적으로 아동의 개인정보를 수집하지 않습니다.</p>
+
+  <h2>8. 문의</h2>
+  <p>개인정보 관련 문의사항:<br>
   <a href="mailto:hello@sammae.kr">hello@sammae.kr</a></p>
 
-  <h2>8. 방침 변경</h2>
-  <p>개인정보처리방침이 변경될 경우 이 페이지를 통해 공지합니다.</p>
+  <h2>9. 방침 변경</h2>
+  <p>개인정보처리방침이 변경될 경우 이 페이지에 공지하며, 중요한 변경 사항은 서비스 내 알림으로 안내합니다.</p>
 </body>
 </html>
