@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Threads OAuth</title></head>
+<body>
+<script>
+  const p = new URLSearchParams(window.location.search);
+  const code = p.get("code");
+  const state = p.get("state");
+  const error = p.get("error");
+  if (code && state) {
+    window.location.replace("https://" + state + ".chromiumapp.org/?" + window.location.search.slice(1));
+  } else if (error) {
+    document.body.textContent = "Error: " + error;
+  } else {
+    document.body.textContent = "No code received.";
+  }
+</script>
+</body>
+</html>
