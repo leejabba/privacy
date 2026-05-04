@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>Threads OAuth</title></head>
+<head>
+<meta charset="utf-8">
+<title>Threads 인증</title>
+<style>
+  body { font-family: -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f5f5f5; }
+  .box { background: #fff; border-radius: 16px; padding: 32px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+  h2 { margin: 0 0 8px; font-size: 20px; }
+  p { color: #666; font-size: 14px; margin: 0 0 20px; }
+  .code-box { background: #f0f0f0; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 13px; word-break: break-all; margin-bottom: 16px; }
+  button { background: #000; color: #fff; border: none; border-radius: 8px; padding: 12px 24px; font-size: 15px; cursor: pointer; width: 100%; }
+  .success { color: #22c55e; font-size: 13px; margin-top: 8px; }
+  .error-title { color: #ef4444; }
+</style>
+</head>
 <body>
+<div class="box" id="root"></div>
 <script>
   const p = new URLSearchParams(window.location.search);
-  const code = p.get("code");
-  const state = p.get("state");
-  const error = p.get("error");
-  if (code && state) {
-    window.location.replace("https://" + state + ".chromiumapp.org/?" + window.location.search.slice(1));
-  } else if (error) {
-    document.body.textContent = "Error: " + error;
+  const code = p.get('code');
+  const error = p.get('error');
+  const root = document.getElementById('root');
+  if (code) {
+    root.innerHTML = '<h2>✅ 인증 완료</h2><p>아래 코드를 복사해서<br>확장 프로그램에 붙여넣으세요.</p><div class="code-box" id="c">' + code + '</div><button onclick="copy()">코드 복사</button><div class="success" id="msg"></div>';
   } else {
-    document.body.textContent = "No code received.";
+    root.innerHTML = '<h2 class="error-title">❌ 오류</h2><p>' + (error || '알 수 없는 오류') + '</p>';
+  }
+  function copy() {
+    navigator.clipboard.writeText(document.getElementById('c').textContent).then(() => {
+      document.getElementById('msg').textContent = '복사되었습니다!';
+    });
   }
 </script>
 </body>
