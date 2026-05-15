@@ -27,7 +27,7 @@
 <body>
   <h1>개인정보처리방침</h1>
   <p class="sub">무명사업가 대시보드 (Chrome Extension)</p>
-  <p class="updated">최종 업데이트: 2026년 5월 1일</p>
+  <p class="updated">최종 업데이트: 2026년 5월 15일</p>
 
   <h2>1. 처리하는 데이터 및 목적</h2>
   <p>본 확장 프로그램이 처리하는 데이터는 성격에 따라 아래와 같이 구분됩니다:</p>
@@ -58,10 +58,22 @@
       <td>Supabase (사용자 본인 계정에만 저장)</td>
     </tr>
     <tr>
-      <td><strong>브라우저 방문 기록</strong></td>
-      <td>로컬 접근만 (외부 전송 없음)</td>
-      <td>바로가기 페이지 제목 자동 완성</td>
-      <td>없음</td>
+      <td><strong>Threads 프로필 정보</strong><br><small>사용자명, 프로필 사진, 자기소개</small></td>
+      <td>Threads API를 통해 읽기 · 로컬 표시</td>
+      <td>계정 식별, 피드/성과 표시</td>
+      <td>Meta Threads API (읽기 전용)</td>
+    </tr>
+    <tr>
+      <td><strong>Threads 게시글 데이터</strong><br><small>발행 내용, 이미지, 조회수, 좋아요 등</small></td>
+      <td>사용자 작성 → Threads API로 발행 / 성과 데이터 읽기</td>
+      <td>글 발행, 성과 분석</td>
+      <td>Meta Threads API</td>
+    </tr>
+    <tr>
+      <td><strong>Threads 액세스 토큰</strong></td>
+      <td>Meta OAuth 인증 후 서버 저장</td>
+      <td>Threads API 호출 인증</td>
+      <td>Supabase (암호화 저장)</td>
     </tr>
     <tr>
       <td><strong>바로가기 URL 도메인</strong></td>
@@ -70,9 +82,6 @@
       <td>Google 파비콘 서비스 (도메인만, 익명)</td>
     </tr>
   </table>
-
-  <h3>브라우저 방문 기록에 대한 상세 설명</h3>
-  <p>본 확장 프로그램은 Chrome의 <code>history</code> 권한을 사용하지만, 이는 오직 <strong>바로가기 추가 시 페이지 제목을 자동으로 입력해주는 기능</strong>에만 사용됩니다. 방문 기록은 외부 서버로 전송되지 않으며, 기기 외부에 저장되지 않습니다.</p>
 
   <h2>2. 데이터 저장 위치</h2>
   <ul>
@@ -85,10 +94,18 @@
   <ul>
     <li><strong>Supabase</strong> (<a href="https://supabase.com/privacy" target="_blank">개인정보처리방침</a>): 사용자 계정 및 데이터 저장</li>
     <li><strong>Google 파비콘 서비스</strong>: 바로가기 아이콘 표시 목적으로 URL 도메인 정보를 Google 서버에 요청합니다. 이 과정에서 개인 식별 정보는 전송되지 않습니다.</li>
+    <li><strong>Meta Platforms, Inc. (Threads API)</strong> (<a href="https://privacycenter.instagram.com/policy" target="_blank">개인정보처리방침</a>): 사용자가 Threads 계정 연동 기능을 선택적으로 사용할 경우 적용됩니다.
+      <ul>
+        <li><strong>Threads 계정 연동</strong>: Meta OAuth 인증을 통해 액세스 토큰을 발급받습니다. 발급된 토큰은 Supabase에 암호화 저장되어 기기 간 공유됩니다.</li>
+        <li><strong>발행 데이터</strong>: 작성한 텍스트 및 첨부 이미지가 Meta Threads API를 통해 Threads에 게시됩니다.</li>
+        <li><strong>이미지 저장</strong>: 첨부 이미지는 Supabase Storage(threads-media 버킷)에 업로드된 후 공개 URL로 Meta API에 전달됩니다.</li>
+        <li>이 기능은 사용자가 직접 연결을 선택한 경우에만 활성화되며, 언제든지 연결을 해제할 수 있습니다.</li>
+      </ul>
+    </li>
   </ul>
 
   <h2>4. 데이터 공유 및 제3자 제공</h2>
-  <p>수집된 개인정보는 법령에 의한 경우를 제외하고 제3자에게 제공하거나 판매하지 않습니다. 위 제3자 서비스(Supabase, Google)는 서비스 운영에 필요한 범위 내에서만 데이터를 처리합니다.</p>
+  <p>수집된 개인정보는 법령에 의한 경우를 제외하고 제3자에게 제공하거나 판매하지 않습니다. 위 제3자 서비스(Supabase, Google, Meta Platforms)는 서비스 운영에 필요한 범위 내에서만 데이터를 처리합니다.</p>
 
   <h2>5. 데이터 보관 기간</h2>
   <p>사용자가 계정 삭제 또는 데이터 삭제를 요청할 때까지 보관합니다. 삭제 요청은 아래 이메일로 문의해 주세요.</p>
@@ -98,6 +115,8 @@
     <li>자신의 데이터 열람, 수정, 삭제 요청 가능</li>
     <li>확장 프로그램 내 설정에서 직접 데이터 삭제 가능</li>
     <li>계정 삭제 요청 시 이메일로 문의</li>
+    <li><strong>Threads 연결 해제</strong>: 확장 프로그램 내 스레드 탭에서 계정 연결을 해제할 수 있으며, 해제 시 저장된 액세스 토큰과 관련 데이터가 즉시 삭제됩니다</li>
+    <li><strong>Meta 데이터 삭제</strong>: Meta의 <a href="https://www.threads.net/settings/account" target="_blank">Threads 설정</a>에서 제3자 앱 접근 권한을 직접 철회할 수 있습니다</li>
   </ul>
 
   <h2>7. 어린이 개인정보 보호</h2>
